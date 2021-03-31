@@ -5,23 +5,30 @@ from .models import WeatherInfo
 from django.db import transaction
 from django.db import DatabaseError
 import django
-from rest_framework import viewsets
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from .serializers import WeatherSerializer
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-def store_data(request,lat,lon,detailing):
+@api_view()
+@permission_classes([AllowAny])
+def store_data(request):
 
+    # print("lat",lat)
+    # print("lon",request.GET.get('lon'))
+    # print("detailing", detailing)
+    lat = request.GET['lat']
+    lon = request.query_params['lon']
+    detailing = request.query_params['detailing']
     print("lat",lat)
-    print("lon",lon)
+    print("lon", lon)
     print("detailing",detailing)
-
-    url = 'https://api.openweathermap.org/data/2.5/onecall?lat=28.7041&lon=77.1025&exclude=current&appid' \
+    url = 'https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&exclude='+detailing+'&appid' \
         '=676d95b33a0d70d28ff022f4cf88efb6'
     response = requests.get(url)
     api_data = response.json()
 
-    minutely = api_data['minutely']
+    # minutely = api_data['minutely']
     # item = next(item['dt'] for item in minutely if 'dt' in item)
     # print("item",item)
 
@@ -45,12 +52,12 @@ def store_data(request,lat,lon,detailing):
 
         # except:
         #     pass
-    # return JsonResponse(api_data)
+
     # queryset = WeatherInfo.objects.all()
     serializer = WeatherSerializer(already_has_data, many=True)
     return JsonResponse(serializer.data, safe=False)
 
-
+    return HttpResponse("okay")
 
 
 # @csrf_exempt

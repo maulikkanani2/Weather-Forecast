@@ -3,8 +3,8 @@ from django.contrib.postgres.fields import ArrayField, JSONField
 
 
 class WeatherInfo(models.Model):
-    lat = models.DecimalField(max_digits=8, decimal_places=4)
-    lon = models.DecimalField(max_digits=8, decimal_places=4)
+    lat = models.DecimalField(max_digits=8, decimal_places=6)
+    lon = models.DecimalField(max_digits=8, decimal_places=6)
     timezone = models.CharField(max_length=100, blank=True, null=True)
     timezone_offset = models.CharField(max_length=20, blank=True, null=True)
     # minutely = JSONField(models.CharField(max_length=100, blank=True, null=True))

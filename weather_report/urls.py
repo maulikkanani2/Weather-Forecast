@@ -19,7 +19,7 @@ from report import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('data/api/lat=<lat>/lon=<lon>/detailing=<detailing>', views.store_data),
+    path('data/api/', views.store_data),
     # path("data/show/", views.Weather)
 
 ]
